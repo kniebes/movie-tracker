@@ -1,0 +1,745 @@
+/* Movie Tracker: Kinosaal-Design, mobile first.
+   Palette: Nachtblau-Saal, Projektorlicht-Bernstein, warmes Papierweiß. */
+
+:root {
+    --bg: #12151c;
+    --surface: #1a1f29;
+    --surface-raised: #222937;
+    --line: #2c3442;
+    --text: #e8e6df;
+    --text-dim: #8b93a3;
+    --amber: #e3a94e;
+    --amber-deep: #b97f2a;
+    --green: #7fb4a8;
+    --danger: #cf6f6f;
+
+    --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-data: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+a {
+    color: var(--amber);
+}
+
+::selection {
+    background: var(--amber);
+    color: var(--bg);
+}
+
+:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+}
+
+/* ---------- Topbar ---------- */
+
+.topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+}
+
+.brand {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.brand-beam {
+    display: inline-block;
+    width: 0.45em;
+    height: 0.45em;
+    margin: 0 0.18em;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 8px 1px rgba(227, 169, 78, 0.65);
+    vertical-align: baseline;
+}
+
+.main-navigation {
+    display: flex;
+    gap: 1rem;
+}
+
+.main-navigation a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 0.15rem 0;
+    border-bottom: 2px solid transparent;
+}
+
+.main-navigation a:hover {
+    color: var(--text);
+}
+
+.main-navigation a.active {
+    color: var(--text);
+    border-bottom-color: var(--amber);
+}
+
+.topbar-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+    align-items: center;
+}
+
+.topbar-actions form {
+    margin: 0;
+}
+
+/* ---------- Layout ---------- */
+
+.container {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 1rem 1rem 4rem;
+}
+
+.page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1rem;
+    margin: 0.5rem 0 1rem;
+}
+
+.page-head h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.7rem;
+    margin: 0;
+}
+
+.page-note {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--amber-deep);
+    border-radius: 6px;
+    background: var(--amber);
+    color: #1c1508;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: #edb75f;
+}
+
+.button.ghost {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--text-dim);
+    font-weight: 500;
+}
+
+.button.ghost:hover {
+    color: var(--text);
+    border-color: var(--text-dim);
+}
+
+.button.danger {
+    background: transparent;
+    border-color: var(--danger);
+    color: var(--danger);
+    font-weight: 500;
+}
+
+.button.danger:hover {
+    background: var(--danger);
+    color: var(--bg);
+}
+
+.button.small {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+/* ---------- Filterleiste ---------- */
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.filter-bar input[type="search"] {
+    flex: 1 1 12rem;
+}
+
+/* ---------- Formular-Grundlagen ---------- */
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.95rem;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-dim);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid var(--amber);
+    outline-offset: 0;
+    border-color: var(--amber-deep);
+}
+
+select {
+    width: auto;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="date"] {
+    font-family: var(--font-data);
+}
+
+input[type="number"] {
+    font-family: var(--font-data);
+}
+
+label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+.field {
+    margin-bottom: 1rem;
+    min-width: 0;
+    flex: 1;
+}
+
+.field-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.field-with-action {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: stretch;
+}
+
+.field-with-action input {
+    flex: 1 1 14rem;
+}
+
+.form-group {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1rem 1rem 0.25rem;
+    margin: 0 0 1.25rem;
+}
+
+.form-group legend {
+    font-family: var(--font-data);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0 0.5rem;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.form-actions .danger {
+    margin-left: auto;
+}
+
+.form-message {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin: 0 0 1rem;
+}
+
+.form-message.error {
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+.form-message.success {
+    border: 1px solid var(--green);
+    color: var(--green);
+}
+
+.saved-flash {
+    margin: 0;
+    color: var(--green);
+    font-size: 0.9rem;
+    animation: fade-out 0.6s ease-in 2.4s forwards;
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+/* Typ-Umschalter (Film / Serie / Episode) */
+
+.type-switch {
+    display: inline-flex;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.2rem;
+    margin: 0 0 1.25rem;
+    background: var(--surface);
+}
+
+.type-switch label {
+    margin: 0;
+}
+
+.type-switch input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.type-switch span {
+    display: inline-block;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    cursor: pointer;
+}
+
+.type-switch input:checked + span {
+    background: var(--amber);
+    color: #1c1508;
+    font-weight: 600;
+}
+
+.type-switch input:focus-visible + span {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+}
+
+/* ---------- Filmliste: das Logbuch ---------- */
+
+.month-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.75rem 0 0.5rem;
+    font-family: var(--font-data);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--amber);
+}
+
+/* Perforationskante wie am Rand eines Filmstreifens */
+.month-divider::before,
+.month-divider::after {
+    content: '';
+    height: 7px;
+    background-image: radial-gradient(circle, var(--line) 1.6px, transparent 1.9px);
+    background-size: 10px 7px;
+    background-repeat: repeat-x;
+    background-position: center;
+}
+
+.month-divider::before {
+    flex: 0 0 1.25rem;
+}
+
+.month-divider::after {
+    flex: 1;
+}
+
+.movie-row {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    margin: 0 -0.75rem;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.movie-row:hover {
+    background: var(--surface);
+}
+
+.movie-main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15rem 0.6rem;
+}
+
+.movie-title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+}
+
+.movie-original {
+    color: var(--text-dim);
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
+.movie-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.data {
+    font-family: var(--font-data);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+}
+
+.badge {
+    font-family: var(--font-data);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    white-space: nowrap;
+}
+
+.badge.type-movie {
+    border-color: var(--amber-deep);
+    color: var(--amber);
+}
+
+.badge.type-series {
+    border-color: var(--green);
+    color: var(--green);
+}
+
+.stars {
+    position: relative;
+    display: inline-block;
+    font-size: 0.78rem;
+    line-height: 1;
+    letter-spacing: 2px;
+    color: var(--line);
+    white-space: nowrap;
+}
+
+.stars .fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--amber);
+}
+
+.load-more {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 3rem 1rem;
+}
+
+.empty-state .button {
+    margin-top: 0.5rem;
+}
+
+/* ---------- Darsteller ---------- */
+
+.cast-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.cast-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line);
+    margin: 0;
+}
+
+.cast-main {
+    min-width: 0;
+}
+
+.cast-name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    display: block;
+}
+
+.cast-name a {
+    color: var(--text);
+}
+
+.cast-movies {
+    display: block;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+}
+
+.cast-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+}
+
+.cast-row.editing {
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    padding: 0.75rem;
+}
+
+.cast-edit-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
+}
+
+.cast-edit-fields .field {
+    margin-bottom: 0.5rem;
+}
+
+/* ---------- Login ---------- */
+
+.login-page {
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+    padding: 1rem;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 22rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 2rem 1.5rem;
+}
+
+.login-card .brand {
+    display: block;
+    text-align: center;
+    font-size: 1.4rem;
+    margin: 0 0 1.5rem;
+}
+
+.login-card .button {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+/* ---------- Fehler-Toast (htmx-Requests ohne Swap) ---------- */
+
+#error-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 1.25rem;
+    transform: translateX(-50%);
+    max-width: min(92vw, 30rem);
+    padding: 0.6rem 1rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--danger);
+    border-radius: 8px;
+    color: var(--danger);
+    font-size: 0.9rem;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+    z-index: 10;
+}
+
+/* ---------- Fehlerseite ---------- */
+
+.error-card {
+    text-align: center;
+}
+
+.error-code {
+    font-family: var(--font-data);
+    font-size: 2.5rem;
+    color: var(--amber);
+    margin: 0;
+}
+
+.error-message {
+    color: var(--text-dim);
+}
+
+/* ---------- htmx-Indikator ---------- */
+
+.spinner {
+    display: inline-block;
+    width: 0.85em;
+    height: 0.85em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+.htmx-indicator {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+    opacity: 1;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ---------- Größere Screens ---------- */
+
+@media (min-width: 44rem) {
+    .container {
+        padding: 1.5rem 2rem 5rem;
+    }
+
+    .page-head h1 {
+        font-size: 2rem;
+    }
+
+    .movie-row {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        padding: 0.45rem 0.75rem;
+    }
+
+    .movie-main {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .movie-meta {
+        margin-top: 0;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+    }
+
+    .data.seen {
+        min-width: 5.5rem;
+        text-align: right;
+    }
+
+    .cast-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .cast-row.editing {
+        align-items: flex-end;
+    }
+
+    .cast-edit-fields {
+        flex-direction: row;
+        gap: 0.75rem;
+    }
+
+    .cast-edit-fields .field {
+        margin-bottom: 0;
+    }
+}
+
+/* ---------- Reduzierte Bewegung ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .saved-flash {
+        animation: none;
+    }
+
+    .spinner {
+        animation-duration: 1.6s;
+    }
+
+    .htmx-indicator {
+        transition: none;
+    }
+}
