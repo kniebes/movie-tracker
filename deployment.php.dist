@@ -25,7 +25,6 @@ return [
         	/src
         	/vendor
         	/templates
-            .env 
         ',
 
 		'allowDelete' => true,

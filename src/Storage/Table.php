@@ -12,4 +12,5 @@ final class Table
     public const string MOVIE_CAST = 'movie_cast';
     public const string MOVIE_CAST_RELATION = 'movie_cast_relation';
     public const string SESSION = 'movie_tracker_session';
+    public const string LOGIN_ATTEMPT = 'movie_tracker_login_attempt';
 }

@@ -8,6 +8,7 @@ use Kniebes\MovieTracker\Http\Response;
 use Kniebes\MovieTracker\Repository\CastRepository;
 use Kniebes\MovieTracker\Repository\MovieRepository;
 use Kniebes\MovieTracker\Service\TmdbClient;
+use Kniebes\MovieTracker\Storage\Storage;
 use Kniebes\MovieTracker\View\Template;
 use PDOException;
 use Throwable;
@@ -75,8 +76,13 @@ class MovieController
         $data = $_POST['data'] ?? [];
 
         try {
-            $movieId = $this->movieRepository->insert($data);
-            $this->castRepository->syncForMovie(movieId: $movieId, names: $this->splitCastNames($data['cast'] ?? ''));
+            // Transaktion: scheitert der Cast-Sync, wird auch der Film nicht angelegt.
+            $movieId = Storage::getInstance()->transactional(function () use ($data): int {
+                $movieId = $this->movieRepository->insert($data);
+                $this->castRepository->syncForMovie(movieId: $movieId, names: $this->splitCastNames($data['cast'] ?? ''));
+
+                return $movieId;
+            });
         } catch (PDOException $exception) {
             error_log('[movie-tracker] Insert fehlgeschlagen: ' . $exception->getMessage());
             $this->renderForm(
@@ -109,8 +115,11 @@ class MovieController
         $data = $_POST['data'] ?? [];
 
         try {
-            $this->movieRepository->update(id: $id, data: $data);
-            $this->castRepository->syncForMovie(movieId: $id, names: $this->splitCastNames($data['cast'] ?? ''));
+            // Transaktion: scheitert der Cast-Sync, bleiben die bestehenden Zuordnungen erhalten.
+            Storage::getInstance()->transactional(function () use ($id, $data): void {
+                $this->movieRepository->update(id: $id, data: $data);
+                $this->castRepository->syncForMovie(movieId: $id, names: $this->splitCastNames($data['cast'] ?? ''));
+            });
         } catch (PDOException $exception) {
             error_log('[movie-tracker] Update von Film ' . $id . ' fehlgeschlagen: ' . $exception->getMessage());
             $this->renderForm(

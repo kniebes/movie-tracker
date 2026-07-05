@@ -17,6 +17,7 @@
     <!-- 422 (Validierungsfehler) soll htmx swappen, damit Inline-Fehlermeldungen ankommen -->
     <meta name="htmx-config" content='{"responseHandling":[{"code":"204","swap":false},{"code":"[23]..","swap":true},{"code":"422","swap":true,"error":false},{"code":"[45]..","swap":false,"error":true}]}'>
     <script src="/assets/htmx.min.js" defer></script>
+    <script src="/assets/app.js" defer></script>
 </head>
 <body>
 
@@ -39,30 +40,6 @@
 </main>
 
 <div id="error-toast" role="alert" hidden></div>
-<script>
-    (function () {
-        let hideTimeout = null;
-
-        function showErrorToast(message) {
-            const toast = document.getElementById('error-toast');
-            toast.textContent = message;
-            toast.hidden = false;
-            clearTimeout(hideTimeout);
-            hideTimeout = setTimeout(function () { toast.hidden = true; }, 6000);
-        }
-
-        // htmx swappt bei Fehler-Antworten nichts; ohne diese Meldung
-        // sähe eine fehlgeschlagene Aktion wie ein stiller Erfolg aus.
-        document.addEventListener('htmx:responseError', function (event) {
-            const status = event.detail.xhr ? event.detail.xhr.status : '?';
-            showErrorToast('Aktion fehlgeschlagen (HTTP ' + status + '). Details stehen im Server-Log.');
-        });
-
-        document.addEventListener('htmx:sendError', function () {
-            showErrorToast('Server nicht erreichbar. Bitte Verbindung prüfen und erneut versuchen.');
-        });
-    })();
-</script>
 
 </body>
 </html>

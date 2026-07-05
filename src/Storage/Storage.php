@@ -3,6 +3,7 @@
 namespace Kniebes\MovieTracker\Storage;
 
 use PDO;
+use Throwable;
 
 class Storage
 {
@@ -58,5 +59,26 @@ class Storage
     public function getLastInsertId(): int
     {
         return intval($this->connection->lastInsertId());
+    }
+
+    /**
+     * Führt die übergebene Operation in einer Transaktion aus. Bei einer
+     * Exception wird zurückgerollt und die Exception unverändert weitergereicht,
+     * damit die Aufrufer ihre bestehende Fehlerbehandlung behalten.
+     */
+    public function transactional(callable $operation): mixed
+    {
+        $this->connection->beginTransaction();
+
+        try {
+            $result = $operation();
+            $this->connection->commit();
+
+            return $result;
+        } catch (Throwable $throwable) {
+            $this->connection->rollBack();
+
+            throw $throwable;
+        }
     }
 }

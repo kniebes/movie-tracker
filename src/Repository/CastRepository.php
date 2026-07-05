@@ -58,14 +58,16 @@ SQL, Table::MOVIE_CAST, Table::MOVIE_CAST_RELATION, Table::MOVIE);
 
     public function delete(int $id): void
     {
-        Storage::getInstance()->execute(
-            sql: 'DELETE FROM `' . Table::MOVIE_CAST_RELATION . '` WHERE `movie_cast_id` = :id',
-            parameters: ['id' => $id]
-        );
-        Storage::getInstance()->execute(
-            sql: 'DELETE FROM `' . Table::MOVIE_CAST . '` WHERE `id` = :id',
-            parameters: ['id' => $id]
-        );
+        Storage::getInstance()->transactional(function () use ($id): void {
+            Storage::getInstance()->execute(
+                sql: 'DELETE FROM `' . Table::MOVIE_CAST_RELATION . '` WHERE `movie_cast_id` = :id',
+                parameters: ['id' => $id]
+            );
+            Storage::getInstance()->execute(
+                sql: 'DELETE FROM `' . Table::MOVIE_CAST . '` WHERE `id` = :id',
+                parameters: ['id' => $id]
+            );
+        });
     }
 
     /**

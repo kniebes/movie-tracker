@@ -20,8 +20,17 @@ class AuthController
     public function login(): never
     {
         $auth = new Auth();
-        $username = trim($_POST['username'] ?? '');
-        $password = $_POST['password'] ?? '';
+        $username = trim(strval($_POST['username'] ?? ''));
+        $password = strval($_POST['password'] ?? '');
+
+        if ($auth->isThrottled()) {
+            Response::html(
+                content: Template::render(template: 'login.html.php', variables: [
+                    'error' => 'Zu viele Fehlversuche. Bitte in 15 Minuten erneut versuchen.',
+                ]),
+                statusCode: 429
+            );
+        }
 
         if ($username !== '' && $password !== '' && $auth->login(username: $username, password: $password)) {
             Response::redirect('/movies');

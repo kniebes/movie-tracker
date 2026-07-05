@@ -7,3 +7,13 @@ RewriteRule ^ index.php [L]
 
 # Keine Verzeichnislisten ausliefern
 Options -Indexes
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    # 'unsafe-inline' nur für Styles: die Sterne-Bewertung nutzt ein style-Attribut
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    # HSTS nur ausliefern, wenn der Request schon über HTTPS kam
+    Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+</IfModule>
