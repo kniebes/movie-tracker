@@ -40,9 +40,8 @@ class CastController
     {
         $this->findOrFail($id);
 
-        $body = Request::body();
-        $name = trim($body['name'] ?? '');
-        $url = trim($body['url'] ?? '');
+        $name = trim(Request::bodyString('name'));
+        $url = trim(Request::bodyString('url'));
 
         if ($name === '') {
             $this->renderEditRowWithError(id: $id, name: $name, url: $url, error: 'Der Name darf nicht leer sein.');

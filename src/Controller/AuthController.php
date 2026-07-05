@@ -2,6 +2,7 @@
 
 namespace Kniebes\MovieTracker\Controller;
 
+use Kniebes\MovieTracker\Http\Request;
 use Kniebes\MovieTracker\Http\Response;
 use Kniebes\MovieTracker\Service\Auth;
 use Kniebes\MovieTracker\View\Template;
@@ -20,8 +21,8 @@ class AuthController
     public function login(): never
     {
         $auth = new Auth();
-        $username = trim(strval($_POST['username'] ?? ''));
-        $password = strval($_POST['password'] ?? '');
+        $username = trim(Request::bodyString('username'));
+        $password = Request::bodyString('password');
 
         if ($auth->isThrottled()) {
             Response::html(
