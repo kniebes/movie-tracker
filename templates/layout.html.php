@@ -13,11 +13,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= escape($title) ?> · Movie Tracker</title>
-    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="/assets/styles.css?<?= version() ?>">
     <!-- 422 (Validierungsfehler) soll htmx swappen, damit Inline-Fehlermeldungen ankommen -->
     <meta name="htmx-config" content='{"responseHandling":[{"code":"204","swap":false},{"code":"[23]..","swap":true},{"code":"422","swap":true,"error":false},{"code":"[45]..","swap":false,"error":true}]}'>
-    <script src="/assets/htmx.min.js" defer></script>
-    <script src="/assets/app.js" defer></script>
+    <script src="/assets/htmx.min.js?<?= version() ?>" defer></script>
+    <script src="/assets/app.js?<?= version() ?>" defer></script>
 </head>
 <body>
 
