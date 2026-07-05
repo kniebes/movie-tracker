@@ -25,10 +25,10 @@ class MovieController
 
     public function list(): never
     {
-        $query = trim($_GET['q'] ?? '');
-        $type = MovieType::tryFrom($_GET['type'] ?? '')?->value;
-        $offset = max(0, intval($_GET['offset'] ?? 0));
-        $previousMonthKey = $_GET['after'] ?? '';
+        $query = trim(Request::queryString('q'));
+        $type = MovieType::tryFrom(Request::queryString('type'))?->value;
+        $offset = max(0, intval(Request::queryString(name: 'offset', default: '0')));
+        $previousMonthKey = Request::queryString('after');
 
         // Ein Datensatz mehr als die Seitengröße verrät, ob es weitere gibt.
         $movies = $this->movieRepository->search(
@@ -73,7 +73,7 @@ class MovieController
 
     public function store(): never
     {
-        $data = $_POST['data'] ?? [];
+        $data = Request::bodyArray('data');
 
         try {
             // Transaktion: scheitert der Cast-Sync, wird auch der Film nicht angelegt.
@@ -112,7 +112,7 @@ class MovieController
             Response::notFound('Film nicht gefunden');
         }
 
-        $data = $_POST['data'] ?? [];
+        $data = Request::bodyArray('data');
 
         try {
             // Transaktion: scheitert der Cast-Sync, bleiben die bestehenden Zuordnungen erhalten.
@@ -144,7 +144,7 @@ class MovieController
 
     public function tmdbLookup(): never
     {
-        $data = $_POST['data'] ?? [];
+        $data = Request::bodyArray('data');
         $values = $this->tmdbFieldValues($data);
         $message = null;
 
