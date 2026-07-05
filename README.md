@@ -40,7 +40,24 @@ Ein kleines, selbst gehostetes Logbuch für gesehene Filme, Serien und Episoden.
     php -S localhost:8080 -t public
     ```
 
-    Auf einem Webserver zeigt die Document-Root auf `public/`, alle Anfragen (außer existierenden Dateien) gehen an `public/index.php`.
+    Auf einem Webserver zeigt die Document-Root auf `public/`, alle Anfragen (außer existierenden Dateien) gehen an `public/index.php`. Für Apache erledigt das die mitgelieferte `public/.htaccess` (Rewrite auf den Front-Controller plus Security-Header), es muss nur `AllowOverride` für das Verzeichnis erlaubt sein.
+
+## Entwicklung mit DDEV
+
+Alternativ zum Built-in-Server bringt das Projekt eine [DDEV](https://ddev.com)-Konfiguration mit (Apache-FPM, PHP 8.5, MariaDB), die dem Live-Setup deutlich näher kommt:
+
+```sh
+ddev start
+cat schema/*.sql | ddev mysql
+```
+
+Die App läuft dann unter <https://movie-tracker.ddev.site>. In der `.env` gelten die DDEV-Zugangsdaten: `STORAGE_HOST=db`, Datenbank, Benutzer und Passwort jeweils `db`.
+
+CLI-Skripte, die die Datenbank brauchen, müssen im Container laufen, weil der Host den DB-Hostnamen `db` nicht auflöst:
+
+```sh
+ddev exec php bin/update-movie-cast-urls.php
+```
 
 ## Architektur
 
