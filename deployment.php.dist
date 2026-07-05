@@ -20,11 +20,12 @@ return [
 		',
 
 		'include' => '
-        	/bin
         	/public
         	/src
         	/vendor
+        	/var
         	/templates
+            .env 
         ',
 
 		'allowDelete' => true,

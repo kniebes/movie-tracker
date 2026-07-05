@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f57f2f3cf1629a37e4d4d48c7bc73d3",
+    "content-hash": "aa2032ff2dbc9eb335c9095d6caaf6ae",
     "packages": [
         {
             "name": "dg/ftp-deployment",
@@ -913,24 +913,28 @@
         },
         {
             "name": "symfony/dotenv",
-            "version": "v8.1.0",
+            "version": "v7.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dotenv.git",
-                "reference": "7ed4e3a11e3c98235c70ded047d7ddf9e6ae854c"
+                "reference": "9b9c7a00e565238857eea0040dc9745e3576402e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dotenv/zipball/7ed4e3a11e3c98235c70ded047d7ddf9e6ae854c",
-                "reference": "7ed4e3a11e3c98235c70ded047d7ddf9e6ae854c",
+                "url": "https://api.github.com/repos/symfony/dotenv/zipball/9b9c7a00e565238857eea0040dc9745e3576402e",
+                "reference": "9b9c7a00e565238857eea0040dc9745e3576402e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.4.1"
+                "php": ">=8.2"
+            },
+            "conflict": {
+                "symfony/console": "<6.4",
+                "symfony/process": "<6.4"
             },
             "require-dev": {
-                "symfony/console": "^7.4|^8.0",
-                "symfony/process": "^7.4|^8.0"
+                "symfony/console": "^6.4|^7.0|^8.0",
+                "symfony/process": "^6.4|^7.0|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -963,7 +967,7 @@
                 "environment"
             ],
             "support": {
-                "source": "https://github.com/symfony/dotenv/tree/v8.1.0"
+                "source": "https://github.com/symfony/dotenv/tree/v7.4.14"
             },
             "funding": [
                 {
@@ -983,7 +987,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-06-05T06:22:21+00:00"
         },
         {
             "name": "symfony/polyfill-php80",

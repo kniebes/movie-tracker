@@ -21,6 +21,6 @@
         "ext-pdo": "*",
         "guzzlehttp/guzzle": "^7.9",
         "dg/ftp-deployment": "^3.7",
-        "symfony/dotenv": "^8.1"
+        "symfony/dotenv": "^7.4"
     }
 }

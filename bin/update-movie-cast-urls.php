@@ -4,6 +4,7 @@
 use Kniebes\MovieTracker\Bootstrap\Environment;
 use Kniebes\MovieTracker\Service\TmdbClient;
 use Kniebes\MovieTracker\Storage\Storage;
+use Kniebes\MovieTracker\Storage\Table;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -17,7 +18,7 @@ if (!TmdbClient::isConfigured()) {
 $storage = Storage::getInstance();
 
 $castMembers = $storage->select(
-    sql: "SELECT id, name FROM movie_cast WHERE url IS NULL OR url = '' ORDER BY name"
+    sql: 'SELECT id, name FROM '.Table::MOVIE_CAST.' WHERE url IS NULL OR url = "" ORDER BY name'
 );
 
 $total = count($castMembers);
@@ -44,7 +45,7 @@ foreach ($castMembers as $index => $castMember) {
     }
 
     $storage->execute(
-        sql: 'UPDATE movie_cast SET url = :url WHERE id = :id',
+        sql: 'UPDATE '.Table::MOVIE_CAST.' SET url = :url WHERE id = :id',
         parameters: ['url' => $person['url'], 'id' => $castMember->id]
     );
     $updatedCount++;
