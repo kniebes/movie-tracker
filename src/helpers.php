@@ -5,6 +5,22 @@ function escape(null|string|int|float $value): string
     return htmlspecialchars(string: (string) ($value ?? ''), flags: ENT_QUOTES | ENT_SUBSTITUTE);
 }
 
+function version(): string
+{
+    $files = [
+        'app.js', 'styles.css'
+    ];
+    $times = 0;
+    foreach ($files as $file) {
+        $path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR. 'assets' . DIRECTORY_SEPARATOR . $file;
+        if (file_exists($path)) {
+            $times += filemtime($path);
+        }
+    }
+
+    return substr(md5((string) $times),0, 8);
+}
+
 /** '2026-07' → 'Juli 2026' */
 function formatMonthLabel(string $monthKey): string
 {
