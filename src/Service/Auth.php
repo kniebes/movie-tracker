@@ -3,6 +3,7 @@
 namespace Kniebes\MovieTracker\Service;
 
 use Kniebes\MovieTracker\Storage\Storage;
+use Kniebes\MovieTracker\Storage\Table;
 
 class Auth
 {
@@ -16,7 +17,7 @@ class Auth
         }
 
         $session = Storage::getInstance()->selectOne(
-            sql: 'SELECT id FROM `session` WHERE `token` = :token AND `active` = 1',
+            sql: 'SELECT id FROM `' . Table::SESSION . '` WHERE `token` = :token AND `active` = 1',
             parameters: ['token' => $token]
         );
 
@@ -31,7 +32,7 @@ class Auth
 
         $token = bin2hex(random_bytes(32));
         Storage::getInstance()->execute(
-            sql: 'INSERT INTO `session` SET `token` = :token, `active` = 1, `created` = NOW(), `last_login` = NOW(), `user_agent` = :user_agent',
+            sql: 'INSERT INTO `' . Table::SESSION . '` SET `token` = :token, `active` = 1, `created` = NOW(), `last_login` = NOW(), `user_agent` = :user_agent',
             parameters: [
                 'token' => $token,
                 'user_agent' => substr($_SERVER['HTTP_USER_AGENT'] ?? 'unknown', 0, 255),
@@ -54,7 +55,7 @@ class Auth
         $token = $_COOKIE['token'] ?? null;
         if (!empty($token)) {
             Storage::getInstance()->execute(
-                sql: 'UPDATE `session` SET `active` = 0 WHERE `token` = :token',
+                sql: 'UPDATE `' . Table::SESSION . '` SET `active` = 0 WHERE `token` = :token',
                 parameters: ['token' => $token]
             );
         }

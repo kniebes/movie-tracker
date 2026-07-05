@@ -1,4 +1,4 @@
-CREATE TABLE `session` (
+CREATE TABLE `movie_tracker_session` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `token` varchar(64) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT 1,

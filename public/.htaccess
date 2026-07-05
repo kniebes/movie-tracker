@@ -1,0 +1,9 @@
+# Alle Anfragen auf den Front-Controller umleiten,
+# außer die Datei oder das Verzeichnis existiert wirklich (z. B. /assets).
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+
+# Keine Verzeichnislisten ausliefern
+Options -Indexes

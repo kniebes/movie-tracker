@@ -22,7 +22,7 @@ Ein kleines, selbst gehostetes Logbuch für gesehene Filme, Serien und Episoden.
 
     ```sh
     mysql -e 'CREATE DATABASE movie_tracker CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
-    cat schema/movie.sql schema/movie_cast.sql schema/movie_cast_relation.sql schema/session.sql | mysql movie_tracker
+    cat schema/movie.sql schema/movie_cast.sql schema/movie_cast_relation.sql schema/movie_tracker_session.sql | mysql movie_tracker
     ```
 
 3. Konfiguration:

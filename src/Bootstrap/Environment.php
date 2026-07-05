@@ -2,30 +2,30 @@
 
 namespace Kniebes\MovieTracker\Bootstrap;
 
-use RuntimeException;
+use Symfony\Component\Dotenv\Dotenv;
 
 class Environment
 {
     public static function init(string $projectRoot): void
     {
         $envFile = $projectRoot . '/.env';
-        if (!is_file($envFile)) {
-            throw new RuntimeException('Keine .env gefunden. Bitte .env.dist nach .env kopieren und ausfüllen.');
+        if (is_file($envFile)) {
+            (new Dotenv())->loadEnv($envFile);
         }
 
-        $lines = file(filename: $envFile, flags: FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        foreach ($lines as $line) {
-            $line = trim($line);
-            if ($line === '' || str_starts_with(haystack: $line, needle: '#')) {
-                continue;
-            }
+        self::configureErrorLog($projectRoot);
+    }
 
-            [$name, $value] = array_pad(array: explode('=', $line, limit: 2), length: 2, value: '');
-            $name = trim($name);
-            $value = trim(trim($value), characters: '"\'');
-            if ($name !== '') {
-                $_ENV[$name] = $value;
-            }
+    /**
+     * Leitet PHP-Fehler und error_log()-Aufrufe nach <projectRoot>/log/error.log um.
+     */
+    private static function configureErrorLog(string $projectRoot): void
+    {
+        $logDirectory = $projectRoot . '/log';
+        if (!is_dir($logDirectory)) {
+            mkdir(directory: $logDirectory, permissions: 0775);
         }
+
+        ini_set(option: 'error_log', value: $logDirectory . '/error.log');
     }
 }

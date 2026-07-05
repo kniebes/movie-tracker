@@ -3,6 +3,7 @@
 namespace Kniebes\MovieTracker\Repository;
 
 use Kniebes\MovieTracker\Storage\Storage;
+use Kniebes\MovieTracker\Storage\Table;
 
 class MovieRepository
 {
@@ -11,7 +12,7 @@ class MovieRepository
     public function findById(int $id): ?object
     {
         return Storage::getInstance()->selectOne(
-            sql: 'SELECT * FROM `movie` WHERE `id` = :id',
+            sql: 'SELECT * FROM `' . Table::MOVIE . '` WHERE `id` = :id',
             parameters: ['id' => $id]
         );
     }
@@ -19,7 +20,7 @@ class MovieRepository
     /** @return object[] */
     public function search(string $query = '', ?string $type = null, int $limit = 100, int $offset = 0): array
     {
-        $sql = 'SELECT * FROM `movie` WHERE 1 = 1';
+        $sql = 'SELECT * FROM `' . Table::MOVIE . '` WHERE 1 = 1';
         $parameters = [];
 
         if ($query !== '') {
@@ -40,7 +41,7 @@ class MovieRepository
     public function seriesTitles(): array
     {
         $rows = Storage::getInstance()->select(
-            sql: 'SELECT DISTINCT `title` FROM `movie` WHERE `type` IN ("series", "episode") ORDER BY `title`'
+            sql: 'SELECT DISTINCT `title` FROM `' . Table::MOVIE . '` WHERE `type` IN ("series", "episode") ORDER BY `title`'
         );
 
         return array_map(fn (object $row) => $row->title, $rows);
@@ -49,12 +50,12 @@ class MovieRepository
     public function insert(array $data): int
     {
         $parameters = $this->normalizeFields($data);
-        $sql = <<<SQL
-INSERT INTO `movie`
+        $sql = sprintf(<<<'SQL'
+INSERT INTO `%s`
 (`title`, `original_title`, `series`, `episode`, `year`, `seen`, `rating`, `url`, `comment`, `type`)
 VALUES
 (:title, :original_title, :series, :episode, :year, :seen, :rating, :url, :comment, :type)
-SQL;
+SQL, Table::MOVIE);
         Storage::getInstance()->execute(sql: $sql, parameters: $parameters);
 
         return Storage::getInstance()->getLastInsertId();
@@ -64,18 +65,18 @@ SQL;
     {
         $parameters = $this->normalizeFields($data);
         $parameters['id'] = $id;
-        $sql = 'UPDATE `movie` SET `title` = :title, `original_title` = :original_title, `series` = :series, `episode` = :episode, `year` = :year, `seen` = :seen, `rating` = :rating, `url` = :url, `comment` = :comment, `type` = :type WHERE `id` = :id';
+        $sql = 'UPDATE `' . Table::MOVIE . '` SET `title` = :title, `original_title` = :original_title, `series` = :series, `episode` = :episode, `year` = :year, `seen` = :seen, `rating` = :rating, `url` = :url, `comment` = :comment, `type` = :type WHERE `id` = :id';
         Storage::getInstance()->execute(sql: $sql, parameters: $parameters);
     }
 
     public function delete(int $id): void
     {
         Storage::getInstance()->execute(
-            sql: 'DELETE FROM `movie_cast_relation` WHERE `movie_id` = :id',
+            sql: 'DELETE FROM `' . Table::MOVIE_CAST_RELATION . '` WHERE `movie_id` = :id',
             parameters: ['id' => $id]
         );
         Storage::getInstance()->execute(
-            sql: 'DELETE FROM `movie` WHERE `id` = :id',
+            sql: 'DELETE FROM `' . Table::MOVIE . '` WHERE `id` = :id',
             parameters: ['id' => $id]
         );
     }
@@ -83,11 +84,11 @@ SQL;
     /** @return string[] */
     public function castNames(int $movieId): array
     {
-        $sql = <<<SQL
-SELECT c.`name` FROM `movie_cast` c
-INNER JOIN `movie_cast_relation` r ON r.`movie_cast_id` = c.`id` AND r.`movie_id` = :id
+        $sql = sprintf(<<<'SQL'
+SELECT c.`name` FROM `%s` c
+INNER JOIN `%s` r ON r.`movie_cast_id` = c.`id` AND r.`movie_id` = :id
 ORDER BY c.`name`
-SQL;
+SQL, Table::MOVIE_CAST, Table::MOVIE_CAST_RELATION);
         $rows = Storage::getInstance()->select(sql: $sql, parameters: ['id' => $movieId]);
 
         return array_map(fn (object $row) => $row->name, $rows);
