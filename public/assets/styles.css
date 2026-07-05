@@ -12,7 +12,6 @@
     --amber-deep: #b97f2a;
     --green: #7fb4a8;
     --danger: #cf6f6f;
-
     --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
     --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
     --font-data: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -220,7 +219,8 @@ textarea {
     background: var(--surface);
     color: var(--text);
     font: inherit;
-    font-size: 0.95rem;
+    /* Mindestens 16px, sonst zoomt iOS Safari beim Fokussieren automatisch */
+    font-size: 1rem;
 }
 
 input::placeholder,
@@ -682,6 +682,12 @@ label {
 
     .page-head h1 {
         font-size: 2rem;
+    }
+
+    input,
+    select,
+    textarea {
+        font-size: 0.95rem;
     }
 
     .movie-row {
