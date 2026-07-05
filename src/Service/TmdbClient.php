@@ -32,6 +32,25 @@ class TmdbClient
         return self::loadDetails(endpoint: $endpoint, tmdbId: (int) $hit['id']);
     }
 
+    /**
+     * Sucht eine Person bei TMDB und liefert den besten Treffer (id, name, url) zurück, oder null.
+     *
+     * @return array{tmdbId:int, name:string, url:string}|null
+     */
+    public static function lookupPerson(string $name): ?array
+    {
+        $hit = self::firstSearchHit(endpoint: 'person', query: trim($name));
+        if ($hit === null) {
+            return null;
+        }
+
+        return [
+            'tmdbId' => (int) $hit['id'],
+            'name' => (string) ($hit['name'] ?? ''),
+            'url' => self::WEB_URL . 'person/' . $hit['id'],
+        ];
+    }
+
     public static function isConfigured(): bool
     {
         return !empty($_ENV['TMDB_API_KEY']);
