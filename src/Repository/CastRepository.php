@@ -34,7 +34,7 @@ class CastRepository
         $sql = sprintf(<<<'SQL'
 SELECT
     c.*,
-    GROUP_CONCAT(m.`title` ORDER BY m.`seen` DESC SEPARATOR ', ') AS movies,
+    GROUP_CONCAT(DISTINCT m.`title` ORDER BY m.`seen` DESC SEPARATOR ', ') AS movies,
     COUNT(m.`id`) AS movieCount
 FROM `%s` c
 LEFT JOIN `%s` r ON r.`movie_cast_id` = c.`id`
