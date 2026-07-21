@@ -25,6 +25,7 @@ class MovieController
 
     public function list(): never
     {
+        $moviePageSize = (int) ($_ENV['MOVIE_PAGE_SIZE'] ?? self::PAGE_SIZE);
         $query = trim(Request::queryString('q'));
         $type = MovieType::tryFrom(Request::queryString('type'))?->value;
         $offset = max(0, intval(Request::queryString(name: 'offset', default: '0')));
@@ -34,18 +35,18 @@ class MovieController
         $movies = $this->movieRepository->search(
             query: $query,
             type: $type,
-            limit: self::PAGE_SIZE + 1,
+            limit: $moviePageSize + 1,
             offset: $offset
         );
-        $hasMore = count($movies) > self::PAGE_SIZE;
-        $movies = array_slice($movies, offset: 0, length: self::PAGE_SIZE);
+        $hasMore = count($movies) > $moviePageSize;
+        $movies = array_slice($movies, offset: 0, length: $moviePageSize);
 
         $rows = Template::render(template: 'movies/_rows.html.php', variables: [
             'movies' => $movies,
             'hasMore' => $hasMore,
             'query' => $query,
             'type' => $type,
-            'nextOffset' => $offset + self::PAGE_SIZE,
+            'nextOffset' => $offset + $moviePageSize,
             'previousMonthKey' => $previousMonthKey,
             'isFirstPage' => $offset === 0,
         ]);
